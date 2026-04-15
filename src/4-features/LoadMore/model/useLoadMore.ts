@@ -1,0 +1,47 @@
+import { RefObject, useCallback, useLayoutEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '1-app/store/utils';
+import { useProducts } from '5-entities/product/model/useProducts';
+import {
+	productsActions,
+	productsSelectors,
+} from '5-entities/product/products';
+
+interface UseLoadMoreParams {
+	ref: RefObject<HTMLDivElement>;
+}
+export const useLoadMore = ({ ref }: UseLoadMoreParams) => {
+	const dispatch = useAppDispatch();
+
+	const { products, isFetching, productsCount } = useProducts();
+
+	const page = useAppSelector(productsSelectors.getPage);
+
+	const isEndOfList = products.length >= productsCount;
+
+	const fetchMoreProducts = useCallback(() => {
+		if (!isEndOfList && !isFetching) {
+			dispatch(productsActions.setPage(page + 1));
+		}
+	}, [isEndOfList, isFetching, page, dispatch]);
+
+	useLayoutEffect(() => {
+		let observer: IntersectionObserver | undefined = undefined;
+
+		if (!isEndOfList && products.length) {
+			const options: IntersectionObserverInit = { threshold: 0.5 };
+			const callback: IntersectionObserverCallback = (entries) => {
+				if (entries[0].isIntersecting) {
+					fetchMoreProducts();
+				}
+			};
+			observer = new IntersectionObserver(callback, options);
+			ref.current && observer.observe(ref.current);
+		}
+
+		return () => {
+			observer?.disconnect();
+		};
+	}, [fetchMoreProducts, isEndOfList, products.length, ref]);
+
+	return { isEndOfList, isFetching };
+};
