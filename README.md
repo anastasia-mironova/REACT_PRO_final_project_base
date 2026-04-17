@@ -1,4 +1,5 @@
 # Структура проекта (Feature-Sliced Design)
+```
 ├───src
 │ ├───1-app
 │ │ ├───router
@@ -123,3 +124,4 @@
 │ └───ui
 │
 └───webpack
+```
