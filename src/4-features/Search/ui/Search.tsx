@@ -1,12 +1,13 @@
 import s from './Search.module.css';
 import { useProductsSearchForm } from '../model/usePostsSearchForm';
+import { useCallback } from 'react';
 
 export const Search = () => {
 	const { searchValue, setSearchValue } = useProductsSearchForm();
 
-	const handleClearSearchText = () => {
+	const handleClearSearchText = useCallback(() => {
 		setSearchValue('');
-	};
+	}, []);
 
 	return (
 		<form className={s['search']}>

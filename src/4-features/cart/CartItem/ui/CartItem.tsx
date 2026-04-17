@@ -4,7 +4,8 @@ import s from '2-pages/CartPage/ui/CartPage.module.css';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '5-entities/cart/model/cart';
-import { CartCounter } from '3-widgets/CartCounter';
+import { CartCounter } from '4-features/CartCounter';
+import { useCallback } from 'react';
 
 type CartItemProps = {
 	product: CartProduct;
@@ -13,9 +14,10 @@ export const CartItem = ({ product }: CartItemProps) => {
 	const dispatch = useDispatch();
 	const { id, name, images, price, discount } = product;
 
-	const handleDelete = () => {
+	const handleDelete = useCallback(() => {
 		dispatch(cartActions.deleteCartProduct(id));
-	};
+	}, [id]);
+
 	return (
 		<div className={classNames(s['cart-item'])}>
 			<div className={classNames(s['cart-item__desc'])}>

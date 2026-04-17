@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { userSelectors } from '5-entities/auth/user';
-import { useAppSelector } from '1-app/store/utils';
+import { useAppSelector } from '6-shared/store/utils';
 import { isLiked } from '6-shared/lib/utils';
 import { productsSelectors } from '5-entities/product/products';
 import { useGetProductsQuery } from '5-entities/product/model/productsApi';

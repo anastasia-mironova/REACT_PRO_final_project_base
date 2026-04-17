@@ -1,5 +1,5 @@
 import { RefObject, useCallback, useLayoutEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '1-app/store/utils';
+import { useAppDispatch, useAppSelector } from '6-shared/store/utils';
 import { useProducts } from '5-entities/product/model/useProducts';
 import {
 	productsActions,

@@ -1,5 +1,5 @@
 import { ComponentType, FC } from 'react';
-import { useAppSelector } from '1-app/store/utils';
+import { useAppSelector } from '6-shared/store/utils';
 import { userSelectors } from '5-entities/auth/user';
 import { Navigate, useLocation } from 'react-router-dom';
 

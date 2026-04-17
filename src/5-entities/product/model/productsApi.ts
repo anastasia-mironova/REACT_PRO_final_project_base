@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { customBaseQuery } from '1-app/config';
+import { customBaseQuery } from '6-shared/store/config';
 
 export interface IErrorResponse {
 	data: { statusCode: number; message: string; error: string };
@@ -11,7 +11,7 @@ interface ProductsResponse {
 	length: number;
 }
 
-interface SetLikeResponse {
+export interface SetLikeResponse {
 	like: {
 		id: string;
 		userId: string;
@@ -19,7 +19,7 @@ interface SetLikeResponse {
 	};
 	message: string;
 }
-interface DeleteLikeResponse {
+export interface DeleteLikeResponse {
 	product: {
 		id: string;
 		userId: string;

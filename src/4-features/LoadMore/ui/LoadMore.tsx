@@ -1,20 +1,25 @@
 import { Alert, CircularProgress, Stack } from '@mui/material';
-import { useRef } from 'react';
+import { memo, useRef } from 'react';
 import { useLoadMore } from '../model/useLoadMore';
 
-export const LoadMore = () => {
+// eslint-disable-next-line react/display-name
+export const LoadMore = memo(() => {
 	const ref = useRef<HTMLDivElement>(null!); // Add non-null assertion
 	const { isEndOfList, isFetching } = useLoadMore({ ref });
+
 
 	return (
 		<Stack
 			ref={ref}
-			direction='row'
-			justifyContent='center'
-			alignItems='center'
-			sx={{ my: 5 }}>
+			sx={{
+				display: 'flex',
+				flexDirection: 'row',
+				justifyContent: 'center',
+				alignItems: 'center',
+				my: 5,
+			}}>
 			{isFetching && <CircularProgress />}
 			{isEndOfList && <Alert severity='success'>End of list!</Alert>}
 		</Stack>
 	);
-};
+});

@@ -9,7 +9,6 @@ import { SignInPage } from '2-pages/SignInPage';
 import { NotFoundPage } from '2-pages/NotFoundPage';
 import { CartPage } from '2-pages/CartPage';
 
-
 export enum AppRoutes {
 	HOME = 'home',
 	FAVORITES = 'favorites',
@@ -65,8 +64,6 @@ export const router = createBrowserRouter([
 				path: RoutePath.signin,
 				element: <SignInPage />,
 			},
-
-			// last route
 			{
 				path: RoutePath.not_found,
 				element: <NotFoundPage />,

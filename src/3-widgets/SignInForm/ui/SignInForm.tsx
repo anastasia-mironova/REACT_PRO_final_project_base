@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import {
 	Avatar,
 	Box,
@@ -79,6 +79,12 @@ export const SignInForm: FC = () => {
 		}
 	};
 
+	const emailInputRef = useRef<HTMLInputElement | null>(null);
+
+	useEffect(() => {
+		emailInputRef.current?.focus();
+	}, []);
+
 	return (
 		<Container component='main' maxWidth='xs'>
 			<Box
@@ -105,19 +111,26 @@ export const SignInForm: FC = () => {
 					<Controller
 						name='email'
 						control={control}
-						render={({ field }) => (
-							<TextField
-								margin='normal'
-								label='Email Address'
-								type='email'
-								fullWidth
-								required
-								autoComplete='email'
-								error={!!errors.email?.message}
-								helperText={errors.email?.message}
-								{...field}
-							/>
-						)}
+						render={({ field }) => {
+							const { ref: fieldRef, ...fieldProps } = field;
+							return (
+								<TextField
+									margin='normal'
+									label='Email Address'
+									type='email'
+									fullWidth
+									required
+									autoComplete='email'
+									error={!!errors.email?.message}
+									helperText={errors.email?.message}
+									inputRef={(node) => {
+										fieldRef(node);
+										emailInputRef.current = node;
+									}}
+									{...field}
+								/>
+							);
+						}}
 					/>
 					<Controller
 						name='password'
@@ -147,7 +160,12 @@ export const SignInForm: FC = () => {
 						sx={{ mt: 3, mb: 2 }}>
 						Sign IN
 					</LoadingButton>
-					<Box display='flex' justifyContent='center' flexGrow={1}>
+					<Box
+						sx={{
+							display: 'flex',
+							justifyContent: 'center',
+							flexGrow: 1,
+						}}>
 						<Link component={RouterLink} to='/signup'>
 							SIGN UP
 						</Link>

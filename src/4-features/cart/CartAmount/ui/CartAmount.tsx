@@ -1,20 +1,24 @@
 import s from '2-pages/CartPage/ui/CartPage.module.css';
 import classNames from 'classnames';
+import { useCallback, useMemo } from 'react';
 
 type CartAmountProps = {
 	products: CartProduct[];
 };
 export const CartAmount = ({ products }: CartAmountProps) => {
-	const allPrice = products.reduce((acc, p) => p.price * p.count + acc, 0);
-	const allDiscount = products.reduce(
-		(acc, p) => p.discount * p.count + acc,
-		0
+	const allPrice = useMemo(
+		() => products.reduce((acc, p) => p.price * p.count + acc, 0),
+		[products]
+	);
+	const allDiscount = useMemo(
+		() => products.reduce((acc, p) => p.discount * p.count + acc, 0),
+		[products]
 	);
 
-	const handleSubmitCart = () => {
+	const handleSubmitCart = useCallback(() => {
 		const order = products.map((p) => ({ id: p.id, count: p.count }));
 		console.log('Отправка заказа на сервер: ', JSON.stringify(order, null, 2));
-	};
+	}, [products]);
 
 	return (
 		<div className={classNames(s['cart-amount'])}>

@@ -1,5 +1,5 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { RootState } from '1-app/store/types';
+import { RootState } from '6-shared/store/types';
 
 export const customBaseQuery = fetchBaseQuery({
 	baseUrl: process.env.API_URL,

@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useCallback } from 'react';
 import classNames from 'classnames';
 import s from './ReviewForm.module.css';
 import { Rating } from '6-shared/ui/Rating';
@@ -11,9 +11,9 @@ export const ReviewForm = () => {
 		setReviewText(e.target.value);
 	};
 
-	const handleClick = () => {
+	const handleClick = useCallback(() => {
 		console.log('Отправка: ', { reviewText, rating });
-	};
+	}, [reviewText, rating]);
 
 	return (
 		<form className={s['form']}>

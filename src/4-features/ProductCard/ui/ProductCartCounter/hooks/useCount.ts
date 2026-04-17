@@ -12,8 +12,8 @@ export const useCount = () => {
 			newCount > MAX_COUNT
 				? MAX_COUNT
 				: newCount < MIN_COUNT
-				? MIN_COUNT
-				: newCount;
+					? MIN_COUNT
+					: newCount;
 		setCount(validCount);
 	};
 	const handleCountMinus = () => {

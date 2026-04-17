@@ -1,5 +1,5 @@
 import { cartActions } from '5-entities/cart/model/cart';
-import { useAppDispatch } from '1-app/store/utils';
+import { useAppDispatch } from '6-shared/store/utils';
 
 export const useAddToCart = () => {
 	const dispatch = useAppDispatch();
