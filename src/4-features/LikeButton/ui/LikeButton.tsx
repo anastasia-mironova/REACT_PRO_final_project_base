@@ -8,12 +8,19 @@ import {
 	IErrorResponse,
 } from '5-entities/product/model/productsApi';
 import { toast } from 'react-toastify';
-import { memo, useCallback, useMemo } from 'react';
+import {
+	memo,
+	useCallback,
+	useState,
+	useOptimistic,
+	startTransition,
+} from 'react';
 import { useAppSelector } from '6-shared/store/utils';
 
 type TLikeButtonProps = {
 	product: Product;
 };
+
 export const LikeButton = memo(({ product }: TLikeButtonProps) => {
 	const accessToken = useAppSelector(userSelectors.getAccessToken);
 	const user = useAppSelector(userSelectors.getUser);
@@ -21,33 +28,53 @@ export const LikeButton = memo(({ product }: TLikeButtonProps) => {
 	const [setLike] = useSetLikeProductMutation();
 	const [deleteLike] = useDeleteLikeProductMutation();
 
-	const isLike = useMemo(
-		() => product?.likes.some((l) => l.userId === user?.id),
-		[product, user]
+	const [isLiked, setIsLiked] = useState(
+		() => product?.likes?.some((l) => l.userId === user?.id) || false
 	);
 
-	const toggleLike = useCallback(async () => {
+	const [optimisticLike, setOptimisticLike] = useOptimistic<boolean, boolean>(
+		isLiked,
+		(_, newState) => newState
+	);
+
+	const toggleLike = useCallback(() => {
 		if (!accessToken) {
 			toast.warning('Вы не авторизованы');
 			return;
 		}
-		let response;
-		if (isLike) {
-			response = await deleteLike({ id: `${product.id}` });
-		} else {
-			response = await setLike({ id: `${product.id}` });
-		}
 
-		if (response.error) {
-			const error = response.error as IErrorResponse;
-			toast.error(error.data.message);
-		}
-	}, [accessToken, isLike, product.id, setLike, deleteLike]);
+		startTransition(async () => {
+			const newLikeState = !isLiked;
+
+			setOptimisticLike(newLikeState);
+			setIsLiked(newLikeState);
+
+			try {
+				let response;
+				if (isLiked) {
+					response = await deleteLike({ id: `${product.id}` });
+				} else {
+					response = await setLike({ id: `${product.id}` });
+				}
+
+				if (response.error) {
+					const error = response.error as IErrorResponse;
+					toast.error(error.data.message);
+					setOptimisticLike(isLiked);
+					setIsLiked(isLiked);
+				}
+			} catch (error) {
+				setOptimisticLike(isLiked);
+				setIsLiked(isLiked);
+				toast.error('Произошла ошибка. Попробуйте позже.');
+			}
+		});
+	}, [accessToken, isLiked, product.id, setLike, deleteLike, setOptimisticLike, setIsLiked]);
 
 	return (
 		<button
 			className={classNames(s['card__favorite'], {
-				[s['card__favorite_is-active']]: isLike,
+				[s['card__favorite_is-active']]: optimisticLike,
 			})}
 			onClick={toggleLike}>
 			<LikeSvg />

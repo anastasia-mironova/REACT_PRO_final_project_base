@@ -9,6 +9,22 @@ module.exports = {
 		react: {
 			version: 'detect',
 		},
+		'import/resolver': {
+			typescript: {
+				project: './tsconfig.json',
+			},
+			alias: {
+				map: [
+					['1-app', './src/1-app'],
+					['2-pages', './src/2-pages'],
+					['3-widgets', './src/3-widgets'],
+					['4-features', './src/4-features'],
+					['5-entities', './src/5-entities'],
+					['6-shared', './src/6-shared'],
+				],
+				extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+			},
+		},
 	},
 	extends: [
 		'plugin:@typescript-eslint/recommended',
@@ -32,5 +48,6 @@ module.exports = {
 		'react/jsx-uses-react': 'off',
 		'react/react-in-jsx-scope': 'off',
 		'@typescript-eslint/explicit-module-boundary-types': 'off',
+		'import/no-unresolved': 'error',
 	},
 };
