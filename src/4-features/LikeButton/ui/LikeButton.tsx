@@ -69,7 +69,15 @@ export const LikeButton = memo(({ product }: TLikeButtonProps) => {
 				toast.error('Произошла ошибка. Попробуйте позже.');
 			}
 		});
-	}, [accessToken, isLiked, product.id, setLike, deleteLike, setOptimisticLike, setIsLiked]);
+	}, [
+		accessToken,
+		isLiked,
+		product.id,
+		setLike,
+		deleteLike,
+		setOptimisticLike,
+		setIsLiked,
+	]);
 
 	return (
 		<button
